@@ -1,20 +1,21 @@
 ﻿namespace OOP_Intensive___RPG_Game
 {
-    public class Hero
+    public abstract class Hero
     {
         public string Name { get; private set; }
         public int Hp { get; private set; }
         public int Strength { get; private set; }
         public int Agility { get; private set; }
-        public int Score { get; private set; }
-
-        public Hero(string name, int hp, int strength, int agility, int score)
+        public int MaxHp { get; private set; }
+        
+        public Hero(string name, int hp, int strength, int agility)
         {
             Name = name;
             Hp = hp;
+            MaxHp = hp;
             Strength = strength;
-            Agility = agility;
-            Score = score;
+            Agility = agility;            
+
         }
 
         public void TakeDamage(int damage)
@@ -30,18 +31,22 @@
             }
         }
 
-        public void Heal(int heal)
+        public void GetHeal(int heal)
         {
             if (heal < 0)
             {
                 heal = 0;  // Не стал выводить ошибку, тк в играх может быть так называемая проверка на успех и при провале можно получить нулевое лечение.
             }
             Hp += heal;
-            if (Hp > 100)
+            if (Hp > MaxHp)
             {
-                Hp = 100;
+                Hp = MaxHp;
             }
         }
+        public abstract int Attack(Monster monster);
+        public abstract string ClassName { get; }
+        //public abstract int GetHeal(Hero hero);
+        
 
     }
 }

@@ -1,11 +1,11 @@
-﻿namespace RPGGAMEConsoleApp
+﻿namespace OOP_Intensive___RPG_Game
 {
     public class Monster
     {
         private int _health;
 
         public string Name { get; }
-        public int Armor { get; }
+        public int Armor { get; }  // Броня уменьшает урон, который получает монстр
 
         public int Health => _health;
         public bool IsAlive => _health > 0;
@@ -17,9 +17,9 @@
             Armor = armor;
         }
 
-        public void TakeDamage(int amount)
+        public void TakeDamage(int amount, bool ignoreArmor = false)
         {
-            int real = amount - Armor;       // броня уменьшает урон
+            int real = ignoreArmor ? amount : amount - Armor;       // броня уменьшает урон
             if (real < 0)
                 real = 0;
 
