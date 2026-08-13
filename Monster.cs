@@ -1,20 +1,23 @@
 ﻿namespace OOP_Intensive___RPG_Game
 {
-    public class Monster
+    public abstract class Monster
     {
-        private int _health;
-        private Random random = new Random();
+        public int _health;        
         public string Name { get; }
         public int Armor { get; }  // Броня уменьшает урон, который получает монстр
-
+        public int Agility { get; }
+        public int Strength { get; private set; }
         public int Health => _health;
         public bool IsAlive => _health > 0;
+        public abstract string ClassName { get; }
 
-        public Monster(string name, int health, int armor)
+        public Monster(string name, int health, int armor, int strength, int agility)
         {
             Name = name;
             _health = health;
             Armor = armor;
+            Agility = agility;
+            Strength = strength;
         }
 
         public void TakeDamage(int amount, bool ignoreArmor = false)
@@ -29,11 +32,7 @@
                 _health = 0;
         }
 
-        public int Attack(Hero hero)
-        {
-            int damage = random.Next(40, 51);
-            hero.TakeDamage(damage);
-            return damage;
-        }
+        public abstract int Attack(Hero hero);
+        
     }
 }

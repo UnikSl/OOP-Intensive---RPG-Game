@@ -33,22 +33,20 @@
             }
         }
 
-        public void GetHeal(int heal)
+        public void Heal(int amount)
         {
-            if (heal < 0)
+            if (amount < 0)
             {
-                heal = 0;  // Не стал выводить ошибку, тк в играх может быть так называемая проверка на успех и при провале можно получить нулевое лечение.
+                amount = 0;  // Не стал выводить ошибку, тк в играх может быть так называемая проверка на успех и при провале можно получить нулевое лечение.
             }
-            Hp += heal;
+            Hp += amount;
             if (Hp > MaxHp)
             {
                 Hp = MaxHp;
             }
         }
         public abstract int Attack(Monster monster);
-        public abstract string ClassName { get; }
-        //public abstract int GetHeal(Hero hero);
+        public abstract string ClassName { get; }      
         
-
     }
 }

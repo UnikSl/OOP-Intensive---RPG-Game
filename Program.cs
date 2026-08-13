@@ -39,40 +39,56 @@
             
             DisplayHeroStats(hero);
 
-            var goblin = new Monster("Гоблин", health: 30, armor: 3);
-            Console.WriteLine($"Из темноты выходит {goblin.Name} (Здоровье: {goblin.Health}, Броня: {goblin.Armor})");
-            var ogr = new Monster("Огр", health: 70, armor: 6);
-            Console.WriteLine($"В компании {ogr.Name} (Здоровье: {ogr.Health}, Броня: {ogr.Armor})");
+            Console.WriteLine("Из темноты лесной чащи выходит: ");
+            Console.WriteLine("Выберите врага для героя:");
+            Console.WriteLine("1. Гоблин");
+            Console.WriteLine("2. Огр");
+            var choiceMonster = Console.ReadLine();
+            Monster monster = null;
+            switch (choiceMonster)
+            {
+                case "1":
+                    monster = new Goblin("Гоблин");
+                    break;
+                case "2":
+                    monster = new Ogr("Огр");
+                    break;                
+                default:
+                    Console.WriteLine("Неверный выбор.");
+                    return;
+            }
+                      
+            Console.WriteLine($"Из темноты выходит {monster.Name} (Здоровье: {monster.Health}, Броня: {monster.Armor})"); 
             
-            while (hero.Hp > 0 && goblin.Health > 0)
+            while (hero.Hp > 0 && monster.Health > 0)
             {
                 Console.WriteLine("Нажмите Enter, чтобы атаковать Гоблина...");
                 Console.ReadLine();
 
-                int damageHero = hero.Attack(goblin);
-                Console.WriteLine($"{hero.Name} наносит {damageHero} урона {goblin.Name}");                              
+                int damageHero = hero.Attack(monster);
+                Console.WriteLine($"{hero.Name} наносит {damageHero} урона {monster.Name}");                              
 
-                if (!goblin.IsAlive)
+                if (!monster.IsAlive)
                 {
-                    Console.WriteLine($"{goblin.Name} повержен!");
+                    Console.WriteLine($"{monster.Name} повержен!");
                     Console.WriteLine($"Победил в схватке {hero.Name}");
                     break;
                 }
                 else
                 {
-                    Console.WriteLine($"{goblin.Name} (Здоровье: {goblin.Health}, Броня: {goblin.Armor})");
+                    Console.WriteLine($"{monster.Name} (Здоровье: {monster.Health}, Броня: {monster.Armor})");
                 }
 
-                Console.WriteLine("Атакует Гоблин. Нажмите Enter...");
+                Console.WriteLine($"Атакует {monster.Name}. Нажмите Enter...");
                 Console.ReadLine();
 
-                int damageMonster = goblin.Attack(hero);
-                Console.WriteLine($"{goblin.Name} наносит {damageMonster} урона {hero.Name}");
+                int damageMonster = monster.Attack(hero);
+                Console.WriteLine($"{monster.Name} наносит {damageMonster} урона {hero.Name}");
 
                 if (!hero.IsAlive)
                 {
                     Console.WriteLine($"{hero.Name} повержен!");
-                    Console.WriteLine($"Победил в схватке {goblin.Name}");
+                    Console.WriteLine($"Победил в схватке {monster.Name}");
                     break;
                 }
                 else
@@ -87,7 +103,7 @@
                         Console.WriteLine($"{hero.Name} использует лечение!");
                     }
                 }
-                DisplayHeroStats(hero);
+                
             }
             Console.ReadLine();
         }
@@ -96,7 +112,7 @@
         {
             if (hero.Hp > 0)
             {
-                Console.WriteLine($"Герой {hero.ClassName} по имени {hero.Name} жив и у него {hero.Hp} очкой здоровья");
+                Console.WriteLine($"Герой {hero.ClassName} по имени {hero.Name} и у него {hero.Hp} очкой здоровья");
                 Console.WriteLine($"У него сила: {hero.Strength}, ловкость: {hero.Agility}");
             }
             else 
