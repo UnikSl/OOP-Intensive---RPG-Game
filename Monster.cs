@@ -3,7 +3,7 @@
     public class Monster
     {
         private int _health;
-
+        private Random random = new Random();
         public string Name { get; }
         public int Armor { get; }  // Броня уменьшает урон, который получает монстр
 
@@ -27,6 +27,13 @@
 
             if (_health < 0)
                 _health = 0;
+        }
+
+        public int Attack(Hero hero)
+        {
+            int damage = random.Next(40, 51);
+            hero.TakeDamage(damage);
+            return damage;
         }
     }
 }

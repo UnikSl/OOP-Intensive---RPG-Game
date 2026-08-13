@@ -3,8 +3,10 @@
 
     internal class Program
     {
+        static Random random = new Random();
         static void Main(string[] args)
         {
+
             Console.Write("Введите имя героя: ");
             var name = Console.ReadLine();
 
@@ -41,30 +43,52 @@
             Console.WriteLine($"Из темноты выходит {goblin.Name} (Здоровье: {goblin.Health}, Броня: {goblin.Armor})");
             var ogr = new Monster("Огр", health: 70, armor: 6);
             Console.WriteLine($"В компании {ogr.Name} (Здоровье: {ogr.Health}, Броня: {ogr.Armor})");
-                                
-            if (hero is Acolyte acolyte)
+            
+            while (hero.Hp > 0 && goblin.Health > 0)
             {
-                acolyte.Heal();
+                Console.WriteLine("Нажмите Enter, чтобы атаковать Гоблина...");
+                Console.ReadLine();
+
+                int damageHero = hero.Attack(goblin);
+                Console.WriteLine($"{hero.Name} наносит {damageHero} урона {goblin.Name}");                              
+
+                if (!goblin.IsAlive)
+                {
+                    Console.WriteLine($"{goblin.Name} повержен!");
+                    Console.WriteLine($"Победил в схватке {hero.Name}");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine($"{goblin.Name} (Здоровье: {goblin.Health}, Броня: {goblin.Armor})");
+                }
+
+                Console.WriteLine("Атакует Гоблин. Нажмите Enter...");
+                Console.ReadLine();
+
+                int damageMonster = goblin.Attack(hero);
+                Console.WriteLine($"{goblin.Name} наносит {damageMonster} урона {hero.Name}");
+
+                if (!hero.IsAlive)
+                {
+                    Console.WriteLine($"{hero.Name} повержен!");
+                    Console.WriteLine($"Победил в схватке {goblin.Name}");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine($"{hero.Name} (Здоровье: {hero.Health})");
+                }
+                if (hero.Health < hero.MaxHp / 2 && hero is Acolyte acolyte)
+                {
+                    if (random.Next(100) < 30)
+                    {
+                        acolyte.Heal();
+                        Console.WriteLine($"{hero.Name} использует лечение!");
+                    }
+                }
+                DisplayHeroStats(hero);
             }
-            DisplayHeroStats(hero);
-            //while (true)
-            //{
-            //    Console.WriteLine("Нажмите Enter, чтобы атаковать Гоблина...");
-            //    Console.ReadLine();
-
-            //    int damage = hero.Attack(goblin);
-            //    Console.WriteLine($"{hero.Name} наносит {damage} урона {goblin.Name}");
-
-            //    if (!goblin.IsAlive)
-            //    {
-            //        Console.WriteLine($"{goblin.Name} повержен!");
-            //        break;
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine($"{goblin.Name} (Здоровье: {goblin.Health}, Броня: {goblin.Armor})");
-            //    }
-            //}
             Console.ReadLine();
         }
 

@@ -7,7 +7,9 @@
         public int Strength { get; private set; }
         public int Agility { get; private set; }
         public int MaxHp { get; private set; }
-        
+        public bool IsAlive => Hp > 0;
+        public int Health => Hp;
+
         public Hero(string name, int hp, int strength, int agility)
         {
             Name = name;
