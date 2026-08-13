@@ -19,7 +19,7 @@
         public void Heal()
         {
             int giveHeal = Strength + Agility;
-            base.Heal(giveHeal);           
+            Heal(giveHeal);           
         }
     }
 }
