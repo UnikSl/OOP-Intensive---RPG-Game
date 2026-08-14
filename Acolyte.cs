@@ -2,6 +2,7 @@
 {
     public class Acolyte : Hero
     {
+        private Random random = new Random();
         public Acolyte(string name)
             : base(name, hp: 60, strength: 15, agility: 8)
         {
@@ -20,6 +21,22 @@
         {
             int giveHeal = Strength + Agility;
             Heal(giveHeal);           
+        }
+        public override bool TryHeal()
+        {
+            if (Health >= MaxHp / 2)
+            {
+                return false;
+            }
+
+            if (random.Next(100) >= 70)
+            {
+                return false;
+            }
+
+            Heal();
+
+            return true;
         }
     }
 }

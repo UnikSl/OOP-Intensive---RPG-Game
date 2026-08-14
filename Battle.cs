@@ -20,10 +20,7 @@
                     OnEnemyDefeated?.Invoke(enemy);
                     break;
                 }
-                else
-                {
-                    Console.WriteLine($"Здоровье у {enemy.Name} осталось {enemy.Health}");
-                }
+
                 int damageEnemy = enemy.Attack(hero);
                 Console.WriteLine($"{enemy.Name} наносит {damageEnemy} урона {hero.Name}");
 
@@ -36,15 +33,11 @@
                 {
                     Console.WriteLine($"Здоровье у {hero.Name} осталось {hero.Health}");
                 }
-                if (hero.Health < hero.MaxHp / 2 && hero is Acolyte acolyte)
+                if (hero.TryHeal())
                 {
-                    if (random.Next(100) < 70)
-                    {
-                        acolyte.Heal();
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"{hero.Name} использует лечение!");
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                    }
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"{hero.Name} использует лечение!");
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
             }
         }

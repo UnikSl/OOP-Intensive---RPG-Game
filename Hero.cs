@@ -47,7 +47,10 @@
             }
         }
         public abstract int Attack(IEnemy enemy);
-        public abstract string ClassName { get; }      
-        
+        public abstract string ClassName { get; }
+        public virtual bool TryHeal()
+        {
+            return false;
+        }
     }
 }
