@@ -1,9 +1,9 @@
 ﻿namespace OOP_Intensive___RPG_Game
 {
 
+
     internal class Program
-    {
-        static Random random = new Random();
+    {        
         static void Main(string[] args)
         {
 
@@ -39,85 +39,97 @@
             
             DisplayHeroStats(hero);
 
-            Console.WriteLine("Из темноты лесной чащи выходит: ");
-            Console.WriteLine("Выберите врага для героя:");
-            Console.WriteLine("1. Гоблин");
-            Console.WriteLine("2. Огр");
-            var choiceMonster = Console.ReadLine();
-            Monster monster = null;
-            switch (choiceMonster)
+            IEnemy[] enemies = new IEnemy[]
             {
-                case "1":
-                    monster = new Goblin("Гоблин");
-                    break;
-                case "2":
-                    monster = new Ogr("Огр");
-                    break;                
-                default:
-                    Console.WriteLine("Неверный выбор.");
-                    return;
-            }
-                      
-            Console.WriteLine($"Из темноты выходит {monster.Name} (Здоровье: {monster.Health}, Броня: {monster.Armor})"); 
+                new Goblin(),
+                new Ogr(),
+                new Golem(),
+            };
+
+            var battle = new Battle();
+            var totalExp = 0;   
+            var killedEnemies = new List<IEnemy>();            
+            battle.OnEnemyDefeated += (enemy) =>
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"{enemy.Name} повержен!");
+                totalExp += enemy.ExpReward;
+                Console.WriteLine($"Победил в схватке {hero.Name} и получил {enemy.ExpReward} опыта.");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            };
             
-            while (hero.Hp > 0 && monster.Health > 0)
+            battle.OnEnemyDefeated += (enemy) =>
             {
-                Console.WriteLine("Нажмите Enter, чтобы атаковать Гоблина...");
-                Console.ReadLine();
+                killedEnemies.Add(enemy);                                
+            };
 
-                int damageHero = hero.Attack(monster);
-                Console.WriteLine($"{hero.Name} наносит {damageHero} урона {monster.Name}");                              
+            battle.OnHeroDefeated += (hero) =>
+            {                
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine();
+                Console.WriteLine($"===== ПОТРАЧЕНО =====");
+                Console.WriteLine();
+                Console.WriteLine($"{hero.Name} покинул этот мир...");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Gray;
+                
+            };
 
-                if (!monster.IsAlive)
-                {
-                    Console.WriteLine($"{monster.Name} повержен!");
-                    Console.WriteLine($"Победил в схватке {hero.Name}");
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine($"{monster.Name} (Здоровье: {monster.Health}, Броня: {monster.Armor})");
-                }
-
-                Console.WriteLine($"Атакует {monster.Name}. Нажмите Enter...");
-                Console.ReadLine();
-
-                int damageMonster = monster.Attack(hero);
-                Console.WriteLine($"{monster.Name} наносит {damageMonster} урона {hero.Name}");
-
+            foreach (var enemy in enemies)
+            {
                 if (!hero.IsAlive)
                 {
-                    Console.WriteLine($"{hero.Name} повержен!");
-                    Console.WriteLine($"Победил в схватке {monster.Name}");
                     break;
                 }
-                else
-                {
-                    Console.WriteLine($"{hero.Name} (Здоровье: {hero.Health})");
-                }
-                if (hero.Health < hero.MaxHp / 2 && hero is Acolyte acolyte)
-                {
-                    if (random.Next(100) < 30)
-                    {
-                        acolyte.Heal();
-                        Console.WriteLine($"{hero.Name} использует лечение!");
-                    }
-                }
-                
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"Из темноты лесной чащи выходит {enemy.Name} (Здоровье: {enemy.Health}, Броня: {enemy.Armor})");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                battle.Fight(hero, enemy);
             }
+            if (killedEnemies.Count > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"{hero.Name} победил следующих врагов:");
+                foreach (var enemy in killedEnemies)
+                {
+                    Console.WriteLine($"{enemy.Name}");
+                }
+                Console.WriteLine($"Опыт который смог заработать {hero.Name} за победу над {killedEnemies.Count} {GetEnemyWord(killedEnemies.Count)}: {totalExp}");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"{hero.Name} не смог победить ни одного врага...");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            
             Console.ReadLine();
-        }
+        }        
 
         static void DisplayHeroStats(Hero hero)
+        {            
+            Console.WriteLine($"Герой {hero.ClassName} по имени {hero.Name} и у него {hero.Hp} очкой здоровья");
+            Console.WriteLine($"У него сила: {hero.Strength}, ловкость: {hero.Agility}");            
+        }
+
+        static string GetEnemyWord(int count)
         {
-            if (hero.Hp > 0)
+            if (count % 100 >= 11 && count % 100 <= 14)
             {
-                Console.WriteLine($"Герой {hero.ClassName} по имени {hero.Name} и у него {hero.Hp} очкой здоровья");
-                Console.WriteLine($"У него сила: {hero.Strength}, ловкость: {hero.Agility}");
+                return "врагов";
             }
-            else 
+
+            switch (count % 10)
             {
-                Console.WriteLine($"Герой {hero.ClassName} по имени {hero.Name} покинул этот мир...");
+                case 1:
+                    return "врагом";
+                case 2:
+                case 3:
+                case 4:
+                    return "врагами";
+                default:
+                    return "врагов";
             }
         }
     }

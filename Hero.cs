@@ -7,6 +7,7 @@
         public int Strength { get; private set; }
         public int Agility { get; private set; }
         public int MaxHp { get; private set; }
+        public int Exp { get; private set; } = 0;
         public bool IsAlive => Hp > 0;
         public int Health => Hp;
 
@@ -45,7 +46,7 @@
                 Hp = MaxHp;
             }
         }
-        public abstract int Attack(Monster monster);
+        public abstract int Attack(IEnemy enemy);
         public abstract string ClassName { get; }      
         
     }

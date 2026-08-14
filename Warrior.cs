@@ -9,10 +9,10 @@
 
         public override string ClassName => "Воин";
 
-        public override int Attack(Monster monster)
+        public override int Attack(IEnemy enemy)
         {
             int damage = Strength * 2;
-            monster.TakeDamage(damage);
+            enemy.TakeDamage(damage);
             return damage;
         }
     }

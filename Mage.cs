@@ -9,10 +9,10 @@
 
         public override string ClassName => "Маг";
 
-        public override int Attack(Monster monster)
+        public override int Attack(IEnemy enemy)
         {
             int damage = Strength * 3;
-            monster.TakeDamage(damage, ignoreArmor: true);
+            enemy.TakeDamage(damage, ignoreArmor: true);
             return damage;
         }
     }
