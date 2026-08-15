@@ -1,20 +1,19 @@
 ﻿namespace OOP_Intensive___RPG_Game
 {
-    public class Goblin : IEnemy
+    public class Goblin : Enemy
     {
         private const int _armor = 3; // Броня уменьшает урон, который получает монстр
         private int _health = 30;
         
-        public string Name => "Гоблин";
+        public override string Name => "Гоблин";
 
-        public int Health => _health;
+        public override int Health => _health;
 
-        public bool IsAlive => _health > 0;
-        public int Armor => _armor;
-        public int ExpReward => 20;
+        public override int Armor => _armor;
+        public override int ExpReward => 20;
         public int Agility { get; private set; } = 10;
         public int Strength { get; private set; } = 5;
-        public void TakeDamage(int amount, bool ignoreArmor = false)
+        public override void TakeDamage(int amount, bool ignoreArmor = false)
         {
             int real = ignoreArmor ? amount : amount - _armor;
                          
@@ -25,13 +24,12 @@
             }
         }
 
-        public int Attack(Hero hero)
+        protected override int CalculateDamage()
         {
             Random random = new Random();
             int damage = (Agility * 2) / (random.Next(1, Strength * 2));
-            hero.TakeDamage(damage);
             return damage;
-        }
+        }        
 
     }
 

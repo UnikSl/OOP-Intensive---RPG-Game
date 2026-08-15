@@ -6,7 +6,7 @@
         int Health { get; }
         int Armor { get; }  
         bool IsAlive { get; }
-        int ExpReward { get; } //experience reward for killing the enemy
+        int ExpReward { get; } //Опыт за победу над врагом
         void TakeDamage(int amount, bool ignoreArmor = false);
         int Attack(Hero hero);
     }

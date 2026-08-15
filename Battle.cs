@@ -1,6 +1,6 @@
 ﻿namespace OOP_Intensive___RPG_Game
 {
-    class Battle
+    partial class Battle
     {
         static Random random = new Random();
         public event Action<IEnemy> OnEnemyDefeated;
@@ -12,14 +12,26 @@
 
             while (enemy.IsAlive && hero.IsAlive)
             {
-                int damageHero = hero.Attack(enemy);
-                Console.WriteLine($"{hero.Name} наносит {damageHero} урона {enemy.Name}. (Здоровье у {enemy.Name} осталось {enemy.Health})");
+                if (!hero.TryUseAbility(enemy))
+                {
+                    int damageHero = hero.Attack(enemy);
+                    Console.WriteLine($"{hero.Name} наносит {damageHero} урона {enemy.Name}.(Здоровье у {enemy.Name} осталось {enemy.Health})");
 
+                }
+                hero.ReduceAbilityCooldowns();
                 if (!enemy.IsAlive)
                 {                    
                     OnEnemyDefeated?.Invoke(enemy);
                     break;
                 }
+                
+                if (hero.TryStun())
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"{hero.Name} оглушает {enemy.Name}!");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    continue; // Враг пропускает ход, если он оглушен
+                }                             
 
                 int damageEnemy = enemy.Attack(hero);
                 Console.WriteLine($"{enemy.Name} наносит {damageEnemy} урона {hero.Name}");
@@ -39,7 +51,9 @@
                     Console.WriteLine($"{hero.Name} использует лечение!");
                     Console.ForegroundColor = ConsoleColor.Gray;
                 }
+                
             }
+
         }
     }
 }

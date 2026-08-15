@@ -5,6 +5,7 @@
         public Archer(string name)
             : base(name, hp: 90, strength: 10, agility: 15)
         {
+            Abilities.Add(new DoubleShotAbility());
         }
 
         public override string ClassName => "Лучник";
@@ -23,6 +24,16 @@
 
             enemy.TakeDamage(damage);
             return damage;
+        }
+
+        public override bool TryDodge()
+        {
+            Random random = new Random();
+            if (random.Next(100) >= 30) // 30% шанс успешного уклонения
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

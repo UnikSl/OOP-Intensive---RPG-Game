@@ -1,8 +1,6 @@
 ﻿namespace OOP_Intensive___RPG_Game
 {
-
-
-    internal class Program
+    internal partial class Program
     {        
         static void Main(string[] args)
         {
@@ -37,29 +35,29 @@
                     return;
             }
             
-            DisplayHeroStats(hero);
-
-            IEnemy[] enemies = new IEnemy[]
-            {
-                new Goblin(),
-                new Ogr(),
-                new Golem(),
-            };
+            hero.DisplayStats();
 
             var battle = new Battle();
-            var totalExp = 0;   
+              
             var killedEnemies = new List<IEnemy>();            
             battle.OnEnemyDefeated += (enemy) =>
             {
+                var leveledUp = hero.LevelProgress.AddExp(enemy.ExpReward);
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"{enemy.Name} повержен!");
-                totalExp += enemy.ExpReward;
+                Console.WriteLine($"{enemy.Name} повержен!");                
                 Console.WriteLine($"Победил в схватке {hero.Name} и получил {enemy.ExpReward} опыта.");
+                if (leveledUp)
+                {
+                    Console.WriteLine($"{hero.Name} достиг уровня {hero.LevelProgress.Level}!");
+                    hero.RestoreHealth();
+                    hero.DisplayStats();
+                }
                 Console.ForegroundColor = ConsoleColor.Gray;
             };
             
             battle.OnEnemyDefeated += (enemy) =>
             {
+                hero.ReduceAbilityCooldowns();
                 killedEnemies.Add(enemy);                                
             };
 
@@ -75,16 +73,30 @@
                 
             };
 
-            foreach (var enemy in enemies)
+            var game = new Game();
+
+
+
+            while (hero.IsAlive && killedEnemies.Count < 20)  // Сражения идут до тех пор пока жив герой или он не победит ХХ врагов
             {
+                IEnemy enemy = CreateRandomEnemy();
+
                 if (!hero.IsAlive)
                 {
                     break;
-                }
+                }                
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"Из темноты лесной чащи выходит {enemy.Name} (Здоровье: {enemy.Health}, Броня: {enemy.Armor})");
                 Console.ForegroundColor = ConsoleColor.Gray;
                 battle.Fight(hero, enemy);
+                
+                if (hero.IsAlive)
+                {    
+                    var stars = game.Play();
+                    hero.AddStars(stars);
+                    Console.WriteLine($" {hero.Name} увеличил свои характеристики на {stars}.");
+                }
+                hero.DisplayStats();
             }
             if (killedEnemies.Count > 0)
             {
@@ -94,7 +106,7 @@
                 {
                     Console.WriteLine($"{enemy.Name}");
                 }
-                Console.WriteLine($"Опыт который смог заработать {hero.Name} за победу над {killedEnemies.Count} {GetEnemyWord(killedEnemies.Count)}: {totalExp}");
+                Console.WriteLine($"Герой {hero.Name} победил {killedEnemies.Count} {GetEnemyWord(killedEnemies.Count)} и повысил свой уровень до {hero.LevelProgress.Level}");
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
             else
@@ -105,12 +117,6 @@
             }
             
             Console.ReadLine();
-        }        
-
-        static void DisplayHeroStats(Hero hero)
-        {            
-            Console.WriteLine($"Герой {hero.ClassName} по имени {hero.Name} и у него {hero.Hp} очкой здоровья");
-            Console.WriteLine($"У него сила: {hero.Strength}, ловкость: {hero.Agility}");            
         }
 
         static string GetEnemyWord(int count)
@@ -132,5 +138,24 @@
                     return "врагов";
             }
         }
+
+       static IEnemy CreateRandomEnemy()
+        {
+            Random random = new Random();
+            int choice = random.Next(4);
+
+            switch (choice)
+            {
+                case 1:
+                    return new Goblin();
+                case 2:
+                    return new Ogr();
+                case 3:
+                    return new Golem();                
+                default:
+                    return new Vampire();
+            }
+        }
+
     }
 }
