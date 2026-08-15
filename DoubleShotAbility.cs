@@ -23,5 +23,5 @@
                 Console.WriteLine($"{hero.Name} выпустил две стрелы и нанёс {damage1 + damage2} урона!");
             }
         }
-    
+
 }

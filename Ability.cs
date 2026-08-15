@@ -5,7 +5,7 @@
         public string Name { get; private set; }
         public int RequiredLevel { get; private set; }
         public int Cooldown { get; private set; }
-        public int CurrentCooldown { get; set; }
+        public int CurrentCooldown { get; private set; }
 
         protected Ability(string name, int requiredLevel, int cooldown)
         {
