@@ -1,0 +1,36 @@
+﻿namespace OOP_Intensive___RPG_Game
+{
+    public class Archer : Hero
+    {
+        public Archer(string name)
+            : base(name, hp: 90, strength: 10, agility: 15)
+        {
+            Abilities.Add(new DoubleShotAbility());
+        }
+
+        public override string ClassName => "Лучник";
+
+        public override int Attack(IEnemy enemy)
+        {
+            int damage = Strength / 2 + Agility;
+
+            // 25% шанс нанести критический удар, полтора урона            
+            if (Random.Shared.Next(100) < 25)
+            {
+                damage = (damage + damage/ 2);
+            }
+
+            enemy.TakeDamage(damage);
+            return damage;
+        }
+
+        public override bool TryDodge()
+        {            
+            if (Random.Shared.Next(100) >= 30) // 30% шанс успешного уклонения
+            {
+                return false;
+            }
+            return true;
+        }
+    }
+}
