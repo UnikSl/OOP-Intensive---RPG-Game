@@ -14,9 +14,8 @@
         {
             int damage = Strength / 2 + Agility;
 
-            // 25% шанс нанести критический удар, полтора урона
-            Random random = new Random();
-            if (random.Next(100) < 25)
+            // 25% шанс нанести критический удар, полтора урона            
+            if (Random.Shared.Next(100) < 25)
             {
                 damage = (damage + damage/ 2);
             }
@@ -26,9 +25,8 @@
         }
 
         public override bool TryDodge()
-        {
-            Random random = new Random();
-            if (random.Next(100) >= 30) // 30% шанс успешного уклонения
+        {            
+            if (Random.Shared.Next(100) >= 30) // 30% шанс успешного уклонения
             {
                 return false;
             }

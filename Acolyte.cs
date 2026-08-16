@@ -1,8 +1,7 @@
 ﻿namespace OOP_Intensive___RPG_Game
 {
     public class Acolyte : Hero
-    {
-        private Random random = new Random();
+    {        
         public Acolyte(string name)
             : base(name, hp: 60, strength: 15, agility: 8)
         {
@@ -29,7 +28,7 @@
                 return false;
             }
 
-            if (random.Next(100) >= 70)
+            if (Random.Shared.Next(100) >= 70)
             {
                 return false;
             }

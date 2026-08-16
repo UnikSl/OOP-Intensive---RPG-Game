@@ -18,8 +18,7 @@
 
         public override bool TryStun()
         {
-            Random random = new Random();
-            if (random.Next(100) >= 30) // 30% шанс успешного оглушения
+            if (Random.Shared.Next(100) >= 30) // 30% шанс успешного оглушения
             {
                 return false;
             }

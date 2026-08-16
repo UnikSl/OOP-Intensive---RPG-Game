@@ -12,6 +12,10 @@
         public int Strength { get; private set; } = 15;
         public override void TakeDamage(int amount, bool ignoreArmor = false)
         {
+            if (amount < 0)
+            {
+                throw new ArgumentException("Нельзя наностить отрицательный урон");
+            }
             int real = ignoreArmor ? amount - _armor / 2 : amount - _armor; // магия уменьшается от брони на 2
             _health -= Math.Max(real, 0);
             if (_health < 0)
@@ -19,11 +23,10 @@
                 _health = 0;
             }
         }
-       
+
         protected override int CalculateDamage()
         {
-            Random random = new Random();
-            int damage = (Strength * 2) / (random.Next(1, Agility * 2));
+            int damage = (Strength * 2) / (Random.Shared.Next(1, Agility * 2));
             return damage;
         }
 

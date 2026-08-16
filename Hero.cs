@@ -6,8 +6,7 @@
         public int Hp { get; private set; }
         public int Strength { get; private set; }
         public int Agility { get; private set; }
-        public int MaxHp { get; private set; }
-        //public int Exp { get; private set; } = 0;
+        public int MaxHp { get; private set; }        
         public LevelProgress LevelProgress { get; private set; } = new LevelProgress();
         public List<Ability> Abilities { get; } = new List<Ability>();
         public bool IsAlive => Hp > 0;

@@ -92,8 +92,7 @@
                     var stars = game.Play();
                     hero.AddStars(stars);
                     Console.WriteLine($" {hero.Name} увеличил свои характеристики на {stars}.");
-                }
-                //hero.DisplayStats();
+                }                
             }
             if (killedEnemies.Count > 0)
             {
@@ -141,9 +140,8 @@
         }
 
        static IEnemy CreateRandomEnemy()
-        {
-            Random random = new Random();
-            int choice = random.Next(4);
+        {            
+            int choice = Random.Shared.Next(4); 
 
             switch (choice)
             {

@@ -4,16 +4,15 @@ namespace OOP_Intensive___RPG_Game
 {
     internal class Game
     {
-        public Game()
-        {
-        }
+        //public Game()
+        //{
+        //}
 
         internal int Play()
         {
             Console.Write("\n=== ЛОВИ Звезды 10 СЕКУНД ===");
 
-            int stars = 0;
-            var random = new Random();
+            int stars = 0;            
             var watch = Stopwatch.StartNew();
             bool visible = false;
             var nextStarTime = TimeSpan.Zero;
@@ -32,7 +31,7 @@ namespace OOP_Intensive___RPG_Game
                     {
                         stars++;
                         visible = false;                       
-                        nextStarTime = watch.Elapsed + TimeSpan.FromMilliseconds(random.Next(500, 1500));
+                        nextStarTime = watch.Elapsed + TimeSpan.FromMilliseconds(Random.Shared.Next(500, 1500));
                     }
                 }
                 

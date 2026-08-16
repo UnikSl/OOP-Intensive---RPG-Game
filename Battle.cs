@@ -1,8 +1,7 @@
 ﻿namespace OOP_Intensive___RPG_Game
 {
-    partial class Battle
-    {
-        static Random random = new Random();
+    public class Battle
+    {        
         public event Action<IEnemy> OnEnemyDefeated;
         public event Action<Hero> OnHeroDefeated;
 
@@ -18,7 +17,7 @@
                     Console.WriteLine($"{hero.Name} наносит {damageHero} урона {enemy.Name}.(Здоровье у {enemy.Name} осталось {enemy.Health})");
 
                 }
-                hero.ReduceAbilityCooldowns();
+                
                 if (!enemy.IsAlive)
                 {                    
                     OnEnemyDefeated?.Invoke(enemy);
@@ -35,6 +34,8 @@
 
                 int damageEnemy = enemy.Attack(hero);
                 Console.WriteLine($"{enemy.Name} наносит {damageEnemy} урона {hero.Name}");
+
+                hero.ReduceAbilityCooldowns();
 
                 if (!hero.IsAlive)
                 {

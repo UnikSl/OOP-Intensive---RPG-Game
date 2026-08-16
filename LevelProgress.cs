@@ -7,6 +7,10 @@
         public int ExpToNextLevel => Level * 50;
         public bool AddExp(int exp)
         {
+            if (exp < 0)
+            {
+                throw new ArgumentException("Нельзя добавить отрицательный опыт");
+            }
             Exp += exp;
             bool leveledUp = false;
 

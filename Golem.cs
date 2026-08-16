@@ -15,8 +15,12 @@
         public int Agility { get; private set; } = 3;
         public int Strength { get; private set; } = 20;
 
-        public override void TakeDamage(int amount, bool ignoreArmor = false)
+       public override void TakeDamage(int amount, bool ignoreArmor = false)
         {
+            if (amount < 0)
+            {
+                throw new ArgumentException("Нельзя наностить отрицательный урон");
+            }
             int real = ignoreArmor ? amount : amount - _armor;
 
             _health -= Math.Max(real, 0);
@@ -28,9 +32,8 @@
 
 
         protected override int CalculateDamage()
-        {
-            Random random = new Random();
-            int damage = (Strength + random.Next(1, Strength / 2)) / (random.Next(1, Agility * 2));
+        {            
+            int damage = (Strength + Random.Shared.Next(1, Strength / 2)) / (Random.Shared.Next(1, Agility * 2));
             return damage;
         }        
 
