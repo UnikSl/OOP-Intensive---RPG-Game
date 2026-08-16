@@ -8,18 +8,12 @@
 
         public override void Use(Hero hero, IEnemy enemy)
         {
-            Console.WriteLine($"{hero.Name} использует способность «{Name}»!");
+            const int damage = 200;
 
-            int damage1 = hero.Attack(enemy);
+            Console.WriteLine($"{hero.Name} запускает огненный шар в {enemy.Name} с уроном {damage}!");
 
-            if (!enemy.IsAlive)
-            {
-                return;
-            }
-
-            int damage2 = hero.Attack(enemy);
-
-            Console.WriteLine($"{hero.Name} выпустил две стрелы и нанёс {damage1 + damage2} урона!");
+            enemy.TakeDamage(damage);
+            
         }
     }
 

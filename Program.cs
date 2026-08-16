@@ -50,14 +50,13 @@
                 {
                     Console.WriteLine($"{hero.Name} достиг уровня {hero.LevelProgress.Level}!");
                     hero.RestoreHealth();
-                    hero.DisplayStats();
+                    //hero.DisplayStats();
                 }
                 Console.ForegroundColor = ConsoleColor.Gray;
             };
             
             battle.OnEnemyDefeated += (enemy) =>
-            {
-                hero.ReduceAbilityCooldowns();
+            {                
                 killedEnemies.Add(enemy);                                
             };
 
@@ -75,9 +74,7 @@
 
             var game = new Game();
 
-
-
-            while (hero.IsAlive && killedEnemies.Count < 20)  // Сражения идут до тех пор пока жив герой или он не победит ХХ врагов
+            while (hero.IsAlive && killedEnemies.Count < 10)  // Сражения идут до тех пор пока жив герой или он не победит ХХ врагов
             {
                 IEnemy enemy = CreateRandomEnemy();
 
@@ -96,7 +93,7 @@
                     hero.AddStars(stars);
                     Console.WriteLine($" {hero.Name} увеличил свои характеристики на {stars}.");
                 }
-                hero.DisplayStats();
+                //hero.DisplayStats();
             }
             if (killedEnemies.Count > 0)
             {
@@ -106,7 +103,11 @@
                 {
                     Console.WriteLine($"{enemy.Name}");
                 }
-                Console.WriteLine($"Герой {hero.Name} победил {killedEnemies.Count} {GetEnemyWord(killedEnemies.Count)} и повысил свой уровень до {hero.LevelProgress.Level}");
+                Console.Write($"Герой {hero.Name} одержал победу над {killedEnemies.Count} враг{GetEnemyWord(killedEnemies.Count)}");
+                if (hero.LevelProgress.Level > 1)
+                {
+                    Console.WriteLine($" и повысил свой уровень до {hero.LevelProgress.Level}");
+                }
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
             else
@@ -123,19 +124,19 @@
         {
             if (count % 100 >= 11 && count % 100 <= 14)
             {
-                return "врагов";
+                return "ов";
             }
 
             switch (count % 10)
             {
                 case 1:
-                    return "врагом";
+                    return "ом";
                 case 2:
                 case 3:
                 case 4:
-                    return "врагами";
+                    return "ами";
                 default:
-                    return "врагов";
+                    return "ов";
             }
         }
 

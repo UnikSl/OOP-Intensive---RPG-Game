@@ -10,17 +10,16 @@
 
         public override string ClassName => "Лучник";
 
-
         public override int Attack(IEnemy enemy)
         {
             int damage = Strength / 2 + Agility;
 
-            // 25% шанс нанести критический удар, удваивающий урон
+            // 25% шанс нанести критический удар, полтора урона
             Random random = new Random();
             if (random.Next(100) < 25)
             {
-                damage *= 2;
-            }//
+                damage = (damage + damage/ 2);
+            }
 
             enemy.TakeDamage(damage);
             return damage;
